@@ -10,6 +10,9 @@ import time
 # Connect to the Vehicle (in this case a UDP endpoint)
 # 注意 baud 必须是921600
 # Connect to the vehicle
+
+# 关于无人机RC
+# FS_THR_ENABLE = 0 脱离RC控制
 try:
     vehicle = connect('/dev/ttyUSB0', wait_ready=True, baud=921600)
     print("Connected to vehicle successfully.")
@@ -43,24 +46,10 @@ print("Armed: %s" % vehicle.armed)  # settable
 
 # test to arm the drone:
 count = 0
-if vehicle.is_armable:
-    print("Vehicle is armable. Arming now...")
-    vehicle.armed = True
-
-    # Wait until the vehicle is armed
-    while not vehicle.armed:
-        print("Waiting for arming...")
-        time.sleep(1)
-
-    print("Vehicle armed successfully!")
-else:
-    print("Vehicle is not armable. Check pre-arm conditions.")
-
-
-vehicle.channels.overrides = {'3': 500}
+vehicle.armed = True
 while count<10:
-    vehicle.armed = True
-    # vehicle.channels.overrides = {'1': 1500, '2': 1500, '3': 1500, '4': 1500}
+    
+    vehicle.channels.overrides = {'1': 1500, '2': 1500, '3': 1500, '4': 1500}
     print("Waiting to be armable",count)
     print("System status: %s" % vehicle.system_status.state)
     print("Mode: %s" % vehicle.mode.name)
